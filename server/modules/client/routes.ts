@@ -1,0 +1,1 @@
+////////// verifica as rotas se tão OK se não ou sla o q ///////////

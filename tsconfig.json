@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                       // O nível de JavaScript que você deseja compilar
+    "module": "CommonJS",                     // O sistema de módulos que você está usando
+    "strict": true,                           // Ativa todas as verificações de tipo
+    "esModuleInterop": true,
+    "moduleResolution": "node",                  // Permite importar módulos CommonJS
+    "skipLibCheck": true,                     // Ignora verificação de tipos em arquivos de declaração
+    "forceConsistentCasingInFileNames": true,// Força o uso consistente de maiúsculas e minúsculas em nomes de arquivos
+    "outDir": "./dist",                     // Diretório de saída para os arquivos compilados
+    "rootDir": "./server",                       // Diretório raiz dos arquivos de entrada
+    "baseUrl": "./server",                       // Diretório raiz dos arquivos de entrada
+    "typeRoots": ["./node_modules/@types"],   // Onde procurar definições de tipo
+    "lib": ["ES2020", "DOM"],
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["server/**/*.ts"],                   // Inclui todos os arquivos TypeScript no diretório src
+  "exclude": ["node_modules", "**/*.spec.ts"] // Exclui node_modules e arquivos de teste
+}
