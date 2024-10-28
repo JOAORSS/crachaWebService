@@ -67,14 +67,33 @@ class DBcrud extends dataBase {
 
     async DbDeleteAluno(matricula: string): Promise< {success: boolean, message: string} > {
         const response = {success: false, message: "Erro: Erro ao executar este delete"}
+        
         try {
             const result = await this.conection.query('DELETE FROM alunos WHERE matricula = $1', [matricula]);
 
-            if (result.rows.length > 0){
+            if ((result.rowCount ?? 0) > 0){
                 response.success = true
                 response.message = "Matricula Removida com sucesso"
             }
+            return response;
+        } catch (error) {
+            console.log("Erro:", error)
+            return response;
+        }
 
+    }
+
+    async DbDeleteVariosAluno(matriculas: Array<string>): Promise< {success: boolean, message: string} > {
+        const response = {success: false, message: "Erro: Erro ao executar delete"}
+
+        try {
+            const matriculasPlaceholder = matriculas.map((_, index) => `$${index + 1}`).join(', ');
+            const result = await this.conection.query(`DELETE FROM alunos WHERE matricula = (${matriculasPlaceholder})`, [matriculas]);
+
+            if ((result.rowCount ?? 0) > 0){
+                response.success = true
+                response.message = "Matriculas Removidas com sucesso"
+            }
             return response;
         } catch (error) {
             console.log("Erro:", error)

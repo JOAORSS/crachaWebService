@@ -18,11 +18,11 @@ console.log('Hello from type Script');
 //     console.log(res.message);
 // })
 
-appInstance.dataBase.DbDeleteAluno('IFVA1111')
-.then((res) =>{
-    console.log(res.success);
-    console.log(res.message);
-})
+// appInstance.dataBase.DbDeleteAluno('IFVA1111')
+// .then((res) =>{
+//     console.log(res.success);
+//     console.log(res.message);
+// })
 
 
 

@@ -39,41 +39,63 @@ class App {
             const matricula = req.params.matricula
 
             try {
-                console.log(matricula);
                 const retorno = await this.dataBase.DbSelectAluno(matricula);
-                res.json(retorno);
+                res.status(200).json(retorno);
             } catch (error) {
                 console.log('Erro ao buscar aluno:', error);
                 res.status(500).json({ message: 'Erro interno no servidor' });
             }
         });
 
-        this.app.get("/get-aluno-all", async (req, res) => {
+        this.app.get("/get-alunos", async (req, res) => {
             try {
                 const retorno = await this.dataBase.DbSelectTodosAlunos();
-                res.json(retorno);
+                res.status(200).json(retorno);
             } catch (error) {
                 console.log('Erro ao buscar aluno:', error);
                 res.status(500).json({ message: 'Erro interno no servidor' });
             }
             });
 
-        this.app.delete("/delete-aluno/:matricula", async (req, res) => {
-            const matricula = req.params.matricula
+            this.app.delete("/delete-aluno", async (req, res) => {
+                const matricula = req.body.matricula
+    
+                try {
+                    const retorno = await this.dataBase.DbDeleteAluno(matricula);
+                    res.status(200).json(retorno);
+                    console.log("Success: " + retorno.message, " " + retorno.success);
+                } catch (error) {
+                    console.log('Erro ao buscar aluno:', error);
+                    res.status(500).json({ message: 'Erro interno no servidor' });
+                }
+    
+            });
 
-            try {
-                const retorno = await this.dataBase.DbDeleteAluno(matricula);
-                res.json(retorno);
-                console.log(retorno.message);
-                console.log(retorno.success);
-            } catch (error) {
-                console.log('Erro ao buscar aluno:', error);
-                res.status(500).json({ message: 'Erro interno no servidor' });
-            }
+            this.app.delete("/delete-alunos", async (req, res) => {
+                const matriculas = req.body.matriculas
 
-            this.dataBase.fecharConexao();
+                if (Array.isArray(matriculas)){
+                try {
+                    const retorno = await this.dataBase.DbDeleteVariosAluno(matriculas);
+                    res.status(200).json(retorno);
+                    console.log("Success: " + retorno.message, " " + retorno.success);
 
-        });
+                } catch (error) {
+                    console.log('Erro ao buscar aluno:', error);
+                    res.status(500).json({ message: 'Erro interno no servidor' });
+                }
+
+                } else {
+                    res.status(400).json({message: "formato invalido"})
+                }
+    
+            });
+            
+
+
+        this.app.post("/inset-aluno", async (req, res) => {
+
+        })
 
         // POST PRECISA QUE O SEJA ENVIADO ALGO POR ELE PRA QUE SEJA ATIVADO
 
