@@ -10,7 +10,7 @@ appInstance.app.listen(3000, () => {
 
 appInstance.dataBase.criarConexao();
 
-console.log('Hello from type Script');
+console.log('Server iniciado');
 
 
 });

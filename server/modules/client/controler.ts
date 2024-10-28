@@ -9,11 +9,12 @@ class DBcrud extends dataBase {
     }
 
     async DbInsertAluno(aluno: schema): Promise < {success: boolean, message: string} > {
-        const response = {success: false, message: "Falha ao inserir aluno"};
+        const response = {success: false, message: "Falha ao inserir aluno", item: ""};
 
         try {
             await this.conection.query('INSERT INTO Alunos (matricula, nome, validador, ultimo_acesso) VALUES ($1::text, $2::text, $3::text, $4)',
                 [aluno.matricula, aluno.nome, aluno.token, aluno.ultimoAcesso]);
+            console.table({Matricula: aluno.matricula,Nome: aluno.nome,Token: aluno.token,UltimoAcesso: aluno.ultimoAcesso})
             response.success = true;
             response.message = "incercao deu certo";
 
