@@ -3,7 +3,7 @@ import express = require('express');
 import bodyParser = require('body-parser');
 
 import DBcrud from './modules/client/controler';
-import { stringify } from 'querystring';
+import schema from './modules/client/schema';
   
 
 class App {
@@ -63,7 +63,7 @@ class App {
                 try {
                     const retorno = await this.dataBase.DbDeleteAluno(matricula);
                     res.status(200).json(retorno);
-                    console.log("Success: " + retorno.message, " " + retorno.success);
+                    console.log(retorno.success, " " + retorno.message);
                 } catch (error) {
                     console.log('Erro ao buscar aluno:', error);
                     res.status(500).json({ message: 'Erro interno no servidor' });
@@ -78,7 +78,7 @@ class App {
                 try {
                     const retorno = await this.dataBase.DbDeleteVariosAluno(matriculas);
                     res.status(200).json(retorno);
-                    console.log("Success: " + retorno.message, " " + retorno.success);
+                    console.log(retorno.success, " " + retorno.message);
 
                 } catch (error) {
                     console.log('Erro ao buscar aluno:', error);
@@ -93,7 +93,20 @@ class App {
             
 
 
-        this.app.post("/inset-aluno", async (req, res) => {
+        this.app.post("/insert-aluno", async (req, res) => {
+            const ultimoAcesso = new Date().toLocaleString("pt-BR", {day: "numeric", month: "numeric",hour: "2-digit",minute: "2-digit",})
+
+            try {
+                const aluno = new schema(req.body.matricula, req.body.nome, req.body.token, ultimoAcesso);
+                const retorno = await this.dataBase.DbInsertAluno(aluno);
+                res.status(201).json(retorno);
+                console.log(retorno.success, " " + retorno.message)
+            } catch (error) {
+                console.log('Erro ao buscar aluno:', error);
+                res.status(500).json({ message: 'Erro interno no servidor' });   
+            }
+
+            
 
         })
 

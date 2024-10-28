@@ -8,14 +8,12 @@ class DBcrud extends dataBase {
         super();
     }
 
-    async DbInsertAluno(matricula: string, nome: string, token: string): Promise < {success: boolean, message: string} > {
+    async DbInsertAluno(aluno: schema): Promise < {success: boolean, message: string} > {
         const response = {success: false, message: "Falha ao inserir aluno"};
 
         try {
             await this.conection.query('INSERT INTO Alunos (matricula, nome, validador, ultimo_acesso) VALUES ($1::text, $2::text, $3::text, $4)',
-                [matricula, nome, token, 
-                 new Date().toLocaleString("pt-BR", {day: "numeric", month: "numeric",hour: "2-digit",minute: "2-digit",})
-                ]);
+                [aluno.matricula, aluno.nome, aluno.token, aluno.ultimoAcesso]);
             response.success = true;
             response.message = "incercao deu certo";
 
@@ -83,12 +81,12 @@ class DBcrud extends dataBase {
 
     }
 
-    async DbDeleteVariosAluno(matriculas: Array<string>): Promise< {success: boolean, message: string} > {
+    async DbDeleteVariosAluno(matriculas: string[]): Promise< {success: boolean, message: string} > {
         const response = {success: false, message: "Erro: Erro ao executar delete"}
 
         try {
             const matriculasPlaceholder = matriculas.map((_, index) => `$${index + 1}`).join(', ');
-            const result = await this.conection.query(`DELETE FROM alunos WHERE matricula = (${matriculasPlaceholder})`, [matriculas]);
+            const result = await this.conection.query(`DELETE FROM alunos WHERE matricula IN (${matriculasPlaceholder})`, matriculas);
 
             if ((result.rowCount ?? 0) > 0){
                 response.success = true
