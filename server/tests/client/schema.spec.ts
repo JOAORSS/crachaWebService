@@ -1,0 +1,1 @@
+/////////// tabela com do nosso banco mas como se fosse uma classe //////////////

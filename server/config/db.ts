@@ -1,14 +1,12 @@
 import pg = require('pg');
-import client = require('pg');
+
 // import redis = require('redis');
-
-
 // const client = redis;
 
 // AQUI A GENT N VAI USAR REDIS E SIM POSTEGRES
 
 class dataBase {
-    private dbConection = new pg.Pool({
+    protected conection = new pg.Pool({
         user: 'postgres',
         host: 'localhost',
         database: 'teste',
@@ -16,29 +14,27 @@ class dataBase {
         port: 5432
     });
 
-    constructor() {}
+    constructor() {
+    }
 
     async criarConexao(){
         
-        await this.dbConection.connect();
+        await this.conection.connect();
 
-        await this.dbConection.query('SELECT NOW()');
+        await this.conection.query('SELECT NOW()');
 
-        console.log()
+        console.log("conexão ativa");
 
     }
 
     logger(){
-        // this.dbConection = "conexão aqui";
-        // this.dbConection = "conexao sucesso";
-        // this.dbConection = "conexão erro";
-        // this.dbConection = "conexão desconectado";
-
+        var conectionStatus = this.conection.ended.valueOf();
+        return conectionStatus ? "Sistema Desligado" : "Sistema ativo";
+        
     }
 
     async fecharConexao(){
-        await this.dbConection.end();
-        console.log("conexão desconectar");
+        await this.conection.end();
 
     }
 }

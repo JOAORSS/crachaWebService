@@ -6,5 +6,7 @@ module.exports = {
     },
     moduleNameMapper: {
         '@/(.*)': '<rootDir>/server/$1'
-    }
+    },
+    verbose: true,
+    testMatch: ['**/*.spec.ts'],
 }
